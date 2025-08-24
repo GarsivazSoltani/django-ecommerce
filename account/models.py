@@ -20,9 +20,9 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "phone"
     REQUIRED_FIELDS = []
 
-    class Meta:
-        verbose_name = 'ユーザー'
-        verbose_name_plural = 'ユーザーたち'
+    # class Meta:
+    #     verbose_name = 'ユーザー'
+    #     verbose_name_plural = 'ユーザーたち'
 
     def __str__(self):
         return self.phone
