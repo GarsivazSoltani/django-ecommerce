@@ -2,6 +2,7 @@ from django import forms
 from .models import User
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
+from django.core import validators
 
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
@@ -43,3 +44,22 @@ class UserChangeForm(forms.ModelForm):
         model = User
         fields = ["email", "password", "is_active", "is_admin"]
 
+def start_with_0(value):
+    if value[0]!='0':
+        raise forms.ValidationError('phone should start with 0')
+
+class LoginForm(forms.Form):
+    phone = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'phone number'
+        }), validators=[start_with_0])
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    def clead_phone(self):
+        phone = self.clead_phone.get(phone)
+        if len(phone) > 11:
+            raise ValidationError(
+                'Invalid value: %(value)s is invalid',
+                code='invalid',
+                params={'value': f'{phone}'}
+            )
