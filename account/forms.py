@@ -51,15 +51,27 @@ def start_with_0(value):
 class LoginForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'phone number'
+        'placeholder': 'Enter a Phone Number'
         }), validators=[start_with_0])
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
     def clead_phone(self):
         phone = self.clead_phone.get(phone)
-        if len(phone) > 11:
+        if len(phone) > 12:
             raise ValidationError(
                 'Invalid value: %(value)s is invalid',
                 code='invalid',
                 params={'value': f'{phone}'}
             )
+
+class RegisterForm(forms.Form):
+    phone = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter a Phone Number'
+    }), validators=[validators.MaxLengthValidator(12)])
+
+class CheckOtpForm(forms.Form):
+    code = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter a Code Number'
+    }), validators=[validators.MaxLengthValidator(4)])
