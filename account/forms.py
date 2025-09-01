@@ -44,27 +44,25 @@ class UserChangeForm(forms.ModelForm):
         model = User
         fields = ["email", "password", "is_active", "is_admin"]
 
-def start_with_0(value):
-    if value[0]!='0':
-        raise forms.ValidationError('phone should start with 0')
+# def start_with_0(value):
+#     if value[0]!='0':
+#         raise forms.ValidationError('phone should start with 0')
 
 class LoginForm(forms.Form):
-    phone = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Enter a Phone Number'
-        }), validators=[start_with_0])
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
-    def clead_phone(self):
-        phone = self.clead_phone.get(phone)
-        if len(phone) > 12:
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if len(username) > 50:
             raise ValidationError(
                 'Invalid value: %(value)s is invalid',
                 code='invalid',
-                params={'value': f'{phone}'}
+                params={'value': f'{username}'}
             )
+        return username
 
-class RegisterForm(forms.Form):
+class OtpLoginForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Enter a Phone Number'
