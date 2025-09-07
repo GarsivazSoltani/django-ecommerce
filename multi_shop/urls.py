@@ -6,10 +6,6 @@ from . import settings
 urlpatterns = [
     path('', include('home.urls')),
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
-    path('account/', include('account.urls'))
-=======
     path('account/', include('account.urls')),
     path('products/', include('product.urls'))
->>>>>>> feature/products
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
