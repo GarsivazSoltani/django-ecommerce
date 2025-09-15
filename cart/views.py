@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import View
-from cart.models import Order, OrderItem
+from cart.models import DiscountCode, Order, OrderItem
 from product.models import Product
 from .cart_module import Cart
 
@@ -46,4 +46,18 @@ class OrderCreationView(View):
                                      quantity=item['quantity'], 
                                      price=item['price'])
         cart.remove_cart()
+        return redirect('cart:order_detail', order.id)
+    
+
+class ApplyDiscontView(View):
+    def post(self, request, pk):
+        code = request.POST.get('discount_code')
+        order = get_object_or_404(Order, id=pk)
+        discount_code = get_object_or_404(DiscountCode, name=code)
+        if discount_code.quantity == 0:
+            return redirect('cart:order_detail', order.id)
+        order.total_price -= order.total_price * discount_code.discount / 100
+        order.save()
+        discount_code.quantity -= 1
+        discount_code.save()
         return redirect('cart:order_detail', order.id)
