@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import Address, User
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from django.core import validators
@@ -61,6 +61,14 @@ class LoginForm(forms.Form):
                 params={'value': f'{username}'}
             )
         return username
+
+class AddressCreationForm(forms.ModelForm):
+    user = forms.IntegerField(required=False)
+    class Meta:
+        model = Address
+        # exclude = ['user']
+        fields = '__all__'
+
 
 class OtpLoginForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={
