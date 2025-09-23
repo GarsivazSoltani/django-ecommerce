@@ -26,6 +26,9 @@ class UserLogin(View):
             user = authenticate(request, username=cd['username'], password=cd['password'])
             if user is not None:
                 login(request, user)
+                next_page = request.GET.get('next')
+                if next_page:
+                    return redirect(next_page)
                 return redirect('/')
             else:
                 form.add_error('phone', 'invalid user data')

@@ -12,3 +12,6 @@ venv/
 # VSCode / IDE
 .vscode/
 .idea/
+
+# .gitignore
+.env
